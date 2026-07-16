@@ -159,7 +159,7 @@ Changing the bucket alone improved the system, but it did not fully guarantee th
 
 To fully stop unwanted siphoning, custom 3D-printed flow breakers were added near the ends of the watering hoses.
 
-![3D Printed Flow Breaker](IMG_1331.jpg)
+![3D Printed Flow Breaker](IMG_1431.jpg)
 
 ![3D Printed Flow Breaker Plant](IMG_1444.jpg)
 
