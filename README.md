@@ -42,6 +42,12 @@ Each plant would have:
 * Its own moisture threshold
 * Its own watering interval
 
+![Reservoir Testing](IMG_1314.jpg)
+
+![Reservoir Hose Arrangement](IMG_1315.jpg)
+
+![Modified Reservoir](IMG_1316.jpg)
+
 This allows plants with different water requirements to be monitored independently instead of treating all four pots as one watering zone.
 
 ## 2. Initial Planning
@@ -101,6 +107,8 @@ Both branches still share the same 5V supply and common ground. They are functio
 
 ![Four-Channel Relay](IMG_1353.jpg)
 
+![Four-Channel Relay With Case](IMG_1287.jpg)
+
 *Four-channel relay module used to control the pumps independently.*
 
 ![Original Reservoir](IMG_1350.jpg)
@@ -113,7 +121,17 @@ Capacitive soil-moisture sensors were selected instead of exposed-metal resistiv
 
 A four-channel relay module was selected because it allows the ESP32 to switch each pump independently while keeping pump current away from the ESP32 GPIO pins.
 
+![Original Reservoir Mounted Components](IMG_1335.jpg)
+
 Both 12V and 5V pumps were considered. The final system uses 5V pumps, allowing the ESP32, relay module and pumps to operate from one suitably rated 5V wall power supply.
+
+![Original Reservoir Mounted Components Back](IMG_1340.jpg)
+
+![Original Reservoir Mounted Components Back1](IMG_1341.jpg)
+
+![Original Reservoir Mounted Components Back2](IMG_1342.jpg)
+
+![Original Reservoir Mounted Components Back3](IMG_1343.jpg)
 
 A power supply rated for approximately 3A was selected to provide enough current for the controller and pumps. Because the final components all operate from compatible voltages, additional buck converters were not required.
 
@@ -121,11 +139,13 @@ Only one pump is operated at a time. This reduces the peak load on the power sup
 
 ## 4. Water Reservoir and Siphon Problem
 
-![Reservoir Testing](IMG_1314.jpg)
 
-![Reservoir Hose Arrangement](IMG_1315.jpg)
+![Front Status LED](IMG_1432.jpg)
 
-![Modified Reservoir](IMG_1316.jpg)
+![Front Status LED](IMG_1444.jpg)
+
+![Completed Front Panel](IMG_1447.jpg)
+
 
 The first reservoir was relatively tall. During testing, its water level could remain higher than the ends of the watering hoses.
 
@@ -138,6 +158,10 @@ Changing the bucket alone improved the system, but it did not fully guarantee th
 ## 5. 3D-Printed Flow Breakers and Vent Lines
 
 To fully stop unwanted siphoning, custom 3D-printed flow breakers were added near the ends of the watering hoses.
+
+![3D Printed Flow Breaker](IMG_1331.jpg)
+
+![3D Printed Flow Breaker Plant](IMG_1444.jpg)
 
 Each outlet includes a curved vent section that allows air to enter the hose after the pump stops. Introducing air breaks the continuous water column inside the hose and interrupts the siphon effect.
 
@@ -174,6 +198,8 @@ The antenna can be positioned outside or away from the main electronics enclosur
 Some ESP32 boards that include both a PCB antenna and a U.FL connector require a small hardware antenna-selection change. This should be checked for the exact board model before connecting an external antenna.
 
 ## 7. Soil Sensor Protection
+
+![Protected Soil Sensor Electronics](IMG_1112.jpg)
 
 ![Protected Soil Sensor Electronics](IMG_1443.jpg)
 
@@ -241,13 +267,11 @@ This gives water time to spread through the soil and reach the moisture sensor. 
 
 ## 9. Front Status LED
 
-![Front Status LED](IMG_1444.jpg)
 
 ![Controller Enclosure](IMG_1445.jpg)
 
 ![Internal Electronics](IMG_1446.jpg)
 
-![Completed Front Panel](IMG_1447.jpg)
 
 A front-mounted status LED provides basic information without requiring the Blynk application to be opened.
 
@@ -265,9 +289,17 @@ The same conditions are also reported through the Blynk dashboard.
 
 The system can be monitored and controlled through Blynk on both desktop and mobile devices.
 
-![Blynk Web Dashboard](IMG_1450.jpg)
+**Mobile Dashboard**
 
-![Blynk Mobile Dashboard](IMG_1448.jpg)
+![Blynk Mobile Dashboard](IMG_1426.jpg)
+
+![Blynk Mobile Dashboard](IMG_1428.jpg)
+
+![Blynk Mobile Dashboard](IMG_1429.jpg)
+
+**Web Dashboard**
+
+![Blynk Web Dashboard](IMG_1451.jpg)
 
 ### Dashboard Features
 
@@ -308,7 +340,6 @@ Every capacitive sensor can produce slightly different values, so wet and dry ca
 * Pump active: the Blynk pump indicator turns on while one of the pumps is running
 * Error message: reports an empty tank, another active pump, watering outside the permitted hours, or missing clock synchronization
 
-![Blynk Controls and Status](IMG_1451.jpg)
 
 ## 11. Software Setup
 
