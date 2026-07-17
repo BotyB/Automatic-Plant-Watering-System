@@ -1,8 +1,8 @@
 # Automatic Plant Watering System
 
-![Automatic Plant Watering System](IMG_1337.jpg)
+![Internal Electronics](IMG_1446.jpg)
 
-![Completed Plant Watering System](IMG_1338.jpg)
+![Controller Enclosure](IMG_1445.jpg)
 
 This project is an automatic watering system designed to care for up to four plants independently.
 
@@ -153,6 +153,14 @@ This created a siphoning problem. After a pump stopped, water could continue mov
 
 The taller bucket was therefore replaced with a shorter container. Lowering the reservoir reduced the vertical pressure difference and made unwanted gravity-fed water flow less likely.
 
+![Completed Front Panel](IMG_1350.jpg)
+
+**The bucket design shown above was changed because the water level was higher than the flower pots. After a pump started the flow, the siphon effect could continue even after the pump stopped, allowing the reservoir to drain until its water level matched the height of the hose outlet.**
+
+**For this reason, a siphon breaker was added later in the design, giving the system two independent anti-siphon safeguards instead of relying on only one.**
+
+![Completed Front Panel](IMG_1445.jpg)
+
 Changing the bucket alone improved the system, but it did not fully guarantee that every hose would stop flowing immediately.
 
 ## 5. 3D-Printed Flow Breakers and Vent Lines
@@ -222,6 +230,38 @@ Care was also taken not to bury the electronic section below the soil line.
 
 The system includes both software and hardware protection.
 
+### Scheduled Watering Window
+
+Automatic watering is permitted only between **07:00 and 22:00**.
+
+The end time is exclusive, meaning automatic watering can run from:
+
+* **07:00**
+* Until
+* **21:59**
+
+At 22:00 and during the night, automatic watering is blocked.
+
+This reduces the chance of a leak, overflow or unexpected pump operation occurring while the system is less likely to be observed.
+
+Manual watering can still be started outside this time window, but the empty-tank protection remains active.
+
+### Minimum Watering Interval
+
+Each plant has an independent minimum interval between automatic watering attempts.
+
+The default interval is: 3 hours
+
+You can see the countdown in the mobile/web app
+
+![Protected Soil Sensor Electronics](IMG_1450.jpg)
+
+*Time_To_Water shows the time left till the system can automatically water the plants*
+
+![Protected Soil Sensor Electronics](IMG_1441.jpg)
+
+*Time_To_Water is on "Ready Now" so it can water each plant if the soil sensor sends a signal*
+
 ### Software Water-Level Protection
 
 One float sensor is connected to the ESP32. The program checks this sensor before starting a pump.
@@ -265,12 +305,99 @@ After automatic watering, the affected zone must wait before it is eligible for 
 
 This gives water time to spread through the soil and reach the moisture sensor. Without this delay, the system could water repeatedly while the sensor still temporarily reports dry soil.
 
-## 9. Front Status LED
+## 9. Overflow Warning: Test Before Leaving the System Unattended
+
+> **[!WARNING]**
+> **Always test the complete system under supervision before allowing it to operate unattended.**
+
+Although the system includes several software and hardware safety features, every installation is different. Hose position, pump flow, reservoir height, pot size and soil absorption can all affect how the system behaves.
+
+A small mistake can result in leaking water, an overflowing flower pot or the reservoir draining through an unintended siphon.
+
+Before regular use, test every watering zone individually.
+
+### Leak Test
+
+Inspect the complete water path:
+
+* Reservoir walls and lid
+* Pump connections
+* Hose connections
+* Hose outlets
+* 3D-printed flow breakers
+* Areas where cables or hoses pass through the enclosure
+
+Run each pump while watching the complete hose path. Check again several minutes after the pump stops, because some leaks may appear slowly.
+
+### Watering-Dose Test
+
+Test each plant separately and confirm that the programmed pump duration delivers a suitable amount of water.
+
+The default pump duration may not be correct for every installation because water flow depends on:
+
+* Pump performance
+* Hose length
+* Hose diameter
+* Vertical height
+* Flow restrictions
+* Pot size
+* Soil type
+
+Begin with a short watering duration and increase it gradually. It is safer to provide too little water during testing than to overflow the pot.
+
+### Siphon-Break Test
+
+After each pump stops, watch the hose outlet and confirm that water flow stops completely.
+
+Verify that:
+
+* Air enters through the curved vent
+* The water column inside the hose is broken
+* Water does not continue dripping continuously
+* The reservoir level does not continue falling
+* The pot does not continue filling after the pump switches off
+
+Test the siphon breakers with the reservoir full, because the siphon risk is greatest when the water level is at its highest.
+
+### Empty-Tank Test
+
+Test both water-level protection systems before relying on them.
+
+1. Lower the water level until the software float sensor reports an empty tank.
+2. Confirm that automatic and manual watering are blocked.
+3. Confirm that the front warning LED begins flashing rapidly.
+4. Confirm that Blynk displays an empty-tank warning.
+5. Test the independent hardware float switch.
+6. Confirm that it physically removes power from the pumps.
+
+Never test a pump dry for an extended period. Only operate it briefly enough to confirm that the protection works.
+
+### Long-Duration Observation Test
+
+Before leaving the system unattended, allow it to operate under supervision for several watering cycles.
+
+Check for:
+
+* Slow leaks
+* Loose hoses
+* Incorrect sensor readings
+* Repeated watering
+* Water continuing to flow after pump shutdown
+* Overflowing drainage trays
+* Wi-Fi reconnection problems
+* Incorrect pump-to-plant assignments
+
+The first tests should be performed with the reservoir partially filled. Do not begin testing with a completely full container unless the system is placed somewhere that can safely handle accidental water release.
+
+> **[!CAUTION]**
+> **Do not place the reservoir or hoses above electronics, power strips, furniture or flooring that could be damaged by water.**
+
+## 10. Front Status LED
 
 
-![Controller Enclosure](IMG_1445.jpg)
+![Automatic Plant Watering System](IMG_1337.jpg)
 
-![Internal Electronics](IMG_1446.jpg)
+![Completed Plant Watering System](IMG_1338.jpg)
 
 
 A front-mounted status LED provides basic information without requiring the Blynk application to be opened.
@@ -285,7 +412,7 @@ The empty-tank pattern remains active until the reservoir is refilled and the fl
 
 The same conditions are also reported through the Blynk dashboard.
 
-## 10. Blynk Web and Mobile Dashboard
+## 11. Blynk Web and Mobile Dashboard
 
 The system can be monitored and controlled through Blynk on both desktop and mobile devices.
 
@@ -341,7 +468,7 @@ Every capacitive sensor can produce slightly different values, so wet and dry ca
 * Error message: reports an empty tank, another active pump, watering outside the permitted hours, or missing clock synchronization
 
 
-## 11. Software Setup
+## 12. Software Setup
 
 1. Download or clone the GitHub repository.
 2. Copy `secrets.example.h`.
@@ -364,7 +491,7 @@ Every capacitive sensor can produce slightly different values, so wet and dry ca
 9. Upload the sketch to the ESP32.
 10. Configure each Blynk moisture datastream with a minimum value of 0 and a maximum value of 100.
 
-## 12. Calibration and Use
+## 13. Calibration and Use
 
 The default sensor calibration in the code is:
 
