@@ -1,8 +1,12 @@
 # Automatic Plant Watering System
 
+![Internal Electronics](IMG_1337.jpg)
+
+*First Water Bucket that was later replaced with a shorter one*
+
 ![Internal Electronics](IMG_1446.jpg)
 
-![Controller Enclosure](IMG_1445.jpg)
+*Final Water Bucket that has a shorter and more compact design*
 
 This project is an automatic watering system designed to care for up to four plants independently.
 
@@ -10,7 +14,6 @@ Each plant has its own capacitive soil-moisture sensor and dedicated water pump.
 
 The system is controlled by an ESP32 microcontroller and uses a four-channel relay module to operate the pumps. Two water-level protection systems monitor the reservoir and prevent the pumps from running when there is not enough water available.
 
-![Watering System Installation](IMG_1111.jpg)
 
 The main goal was to create a practical system that reduces manual plant care while avoiding both underwatering and unnecessary repeated watering.
 
@@ -42,11 +45,6 @@ Each plant would have:
 * Its own moisture threshold
 * Its own watering interval
 
-![Reservoir Testing](IMG_1314.jpg)
-
-![Reservoir Hose Arrangement](IMG_1315.jpg)
-
-![Modified Reservoir](IMG_1316.jpg)
 
 This allows plants with different water requirements to be monitored independently instead of treating all four pots as one watering zone.
 
@@ -105,15 +103,34 @@ Both branches still share the same 5V supply and common ground. They are functio
 
 *Four capacitive soil sensors, four 5V water pumps and watering hoses.*
 
+
 ![Four-Channel Relay](IMG_1353.jpg)
+
+*Four channel relay*
+
 
 ![Four-Channel Relay With Case](IMG_1287.jpg)
 
-*Four-channel relay module used to control the pumps independently.*
+*I made a custom 3D printed case for the four-channel relay module used to control the pumps independently.*
+
+![ESP32-U](IMG_1111.jpg)
+
+*ESP32 38-pin model U with external U.fl antenna*
+
+![Reservoir Testing](IMG_1314.jpg)
+*The water level sensor that will sit inside the water bucket, its a simple switch that can be used both with the ballast lowering down or rising as water level raises*
+
+![Reservoir Hose Arrangement](IMG_1315.jpg)
+
+*Here i am testing if the sensor works and to check how to install it*
+
+![Modified Reservoir](IMG_1316.jpg)
+
+*I have installed the sensor at the lowest point of the first water bucket model leaving some space from the bottom so it will not get stuck*
 
 ![Original Reservoir](IMG_1350.jpg)
 
-*The original taller water reservoir considered during the first build.*
+**The original taller water reservoir considered during the first build.**
 
 The first stage involved choosing the sensors, pumps, relay module and operating voltage.
 
@@ -122,69 +139,32 @@ Capacitive soil-moisture sensors were selected instead of exposed-metal resistiv
 A four-channel relay module was selected because it allows the ESP32 to switch each pump independently while keeping pump current away from the ESP32 GPIO pins.
 
 ![Original Reservoir Mounted Components](IMG_1335.jpg)
+*All component are wired and glued to the bucket to be tested with a 5v wall charger rated 3 Amps* 
 
 Both 12V and 5V pumps were considered. The final system uses 5V pumps, allowing the ESP32, relay module and pumps to operate from one suitably rated 5V wall power supply.
 
 ![Original Reservoir Mounted Components Back](IMG_1340.jpg)
+*The 4-channel relay on the back of the bucket*
+**NOTE: it is marked as 250/125/30/28 Volt AC but it works perfectly with a 5v 3A wall charger**
 
 ![Original Reservoir Mounted Components Back1](IMG_1341.jpg)
+*ESP32 powered up and ready to be tested*
 
 ![Original Reservoir Mounted Components Back2](IMG_1342.jpg)
+*Checking if pump is arming when ESP32 is triggered*
 
 ![Original Reservoir Mounted Components Back3](IMG_1343.jpg)
+*Added zip-tie holes so i can close the lid of the ESP32*
+**NOTE: final design uses 2x water level sensors so one shots off the pumps from starting dry and the other to show the water level in the app**
 
 A power supply rated for approximately 3A was selected to provide enough current for the controller and pumps. Because the final components all operate from compatible voltages, additional buck converters were not required.
 
 Only one pump is operated at a time. This reduces the peak load on the power supply and prevents several pumps from starting simultaneously.
 
-## 4. Water Reservoir and Siphon Problem
-
-
-![Front Status LED](IMG_1432.jpg)
-
-![Front Status LED](IMG_1444.jpg)
-
-![Completed Front Panel](IMG_1447.jpg)
-
-
-The first reservoir was relatively tall. During testing, its water level could remain higher than the ends of the watering hoses.
-
-This created a siphoning problem. After a pump stopped, water could continue moving through the hose because of the height difference between the reservoir and the plant pots. In some cases, this allowed more water to leave the reservoir than intended and created a risk of overflowing the pots.
-
-The taller bucket was therefore replaced with a shorter container. Lowering the reservoir reduced the vertical pressure difference and made unwanted gravity-fed water flow less likely.
-
-![Completed Front Panel](IMG_1350.jpg)
-
-**The bucket design shown above was changed because the water level was higher than the flower pots. After a pump started the flow, the siphon effect could continue even after the pump stopped, allowing the reservoir to drain until its water level matched the height of the hose outlet.**
-
-**For this reason, a siphon breaker was added later in the design, giving the system two independent anti-siphon safeguards instead of relying on only one.**
-
-![Completed Front Panel](IMG_1445.jpg)
-
-Changing the bucket alone improved the system, but it did not fully guarantee that every hose would stop flowing immediately.
-
-## 5. 3D-Printed Flow Breakers and Vent Lines
-
-To fully stop unwanted siphoning, custom 3D-printed flow breakers were added near the ends of the watering hoses.
-
-![3D Printed Flow Breaker](IMG_1431.jpg)
-
-![3D Printed Flow Breaker Plant](IMG_1444.jpg)
-
-Each outlet includes a curved vent section that allows air to enter the hose after the pump stops. Introducing air breaks the continuous water column inside the hose and interrupts the siphon effect.
-
-Without the vent, a hose filled completely with water can continue drawing water from the reservoir even though the pump is no longer powered.
-
-The final arrangement provides two forms of siphon protection:
-
-* A shorter reservoir with less height above the plants
-* Vented 3D-printed hose outlets that break the water column
-
-This ensures that each plant receives approximately the intended pump dose rather than continuing to receive water through gravity flow.
-
-## 6. Controller and Wireless Connection
+## 4. Controller and Wireless Connection
 
 ![ESP32-U Controller](IMG_1352.jpg)
+*The ESP32-U was fitted inside this plastic container in the case of water getting near it with only the bottom being exposed for code reflashing* 
 
 An ESP32-U development board was selected as the main controller.
 
@@ -205,11 +185,13 @@ The antenna can be positioned outside or away from the main electronics enclosur
 
 Some ESP32 boards that include both a PCB antenna and a U.FL connector require a small hardware antenna-selection change. This should be checked for the exact board model before connecting an external antenna.
 
-## 7. Soil Sensor Protection
+## 5. Soil Sensor Protection
 
 ![Protected Soil Sensor Electronics](IMG_1112.jpg)
+*This was the choosen soil sensor but this design has a major flaw, its electronics are exposed to water damage*
 
 ![Protected Soil Sensor Electronics](IMG_1443.jpg)
+*The sensors have been coated with liquid tape to protect from damage* 
 
 Only the lower sensing section of a capacitive soil sensor is intended to remain inside the soil.
 
@@ -225,6 +207,65 @@ The protective coating was applied around:
 The active sensing area was left uncovered so the sensor could continue measuring changes in soil moisture correctly.
 
 Care was also taken not to bury the electronic section below the soil line.
+
+
+
+## 6. Water Reservoir and Siphon Problem
+
+**NOTE: Please do read the whole project since in early testing the system worked but i had an unforseen problem that the pump stopped but the water kept syphoning and it filled the pot till it got out**
+
+![Front Status LED](IMG_1432.jpg)
+
+*3D printed syphon breakers were added so air can enter and break the syphon effect*
+
+![Front Status LED](IMG_1444.jpg)
+
+*After more testing i have found that the vent was not tall enought*
+
+![Completed Front Panel](IMG_1447.jpg)
+
+*Added a piece of hose to make the vent taller so this way it could not spash water out and work flawlessly*
+
+The first reservoir was relatively tall. During testing, its water level could remain higher than the ends of the watering hoses.
+
+This created a siphoning problem. After a pump stopped, water could continue moving through the hose because of the height difference between the reservoir and the plant pots. In some cases, this allowed more water to leave the reservoir than intended and created a risk of overflowing the pots.
+
+The taller bucket was therefore replaced with a shorter container. Lowering the reservoir reduced the vertical pressure difference and made unwanted gravity-fed water flow less likely.
+
+![Completed Front Panel](IMG_1350.jpg)
+
+*The original bucket that got replaced because of the height*
+
+**The bucket design shown above was changed because the water level was higher than the flower pots. After a pump started the flow, the siphon effect could continue even after the pump stopped, allowing the reservoir to drain until its water level matched the height of the hose outlet.**
+
+**For this reason, a siphon breaker was added later in the design, giving the system two independent anti-siphon safeguards instead of relying on only one.**
+
+![Completed Front Panel](IMG_1445.jpg)
+
+*This is the final design that i have choose for this project and succesfully tested*
+
+Changing the bucket alone improved the system, but it did not fully guarantee that every hose would stop flowing immediately.
+
+## 7. 3D-Printed Flow Breakers and Vent Lines
+
+To fully stop unwanted siphoning, custom 3D-printed flow breakers were added near the ends of the watering hoses.
+
+![3D Printed Flow Breaker](IMG_1431.jpg)
+*I have made this design so it will fit the choosen hoses and to break the syphon effect since it lets water get inside with the top vent*
+
+![3D Printed Flow Breaker Plant](IMG_1444.jpg)
+*Installed on the plant pot holder and with the syphon breaker added*
+
+Each outlet includes a curved vent section that allows air to enter the hose after the pump stops. Introducing air breaks the continuous water column inside the hose and interrupts the siphon effect.
+
+Without the vent, a hose filled completely with water can continue drawing water from the reservoir even though the pump is no longer powered.
+
+The final arrangement provides two forms of siphon protection:
+
+* A shorter reservoir with less height above the plants
+* Vented 3D-printed hose outlets that break the water column
+
+This ensures that each plant receives approximately the intended pump dose rather than continuing to receive water through gravity flow.
 
 ## 8. Safety and Warning Systems
 
@@ -307,8 +348,8 @@ This gives water time to spread through the soil and reach the moisture sensor. 
 
 ## 9. Overflow Warning: Test Before Leaving the System Unattended
 
-> **[!WARNING]**
-> **Always test the complete system under supervision before allowing it to operate unattended.**
+ **[!WARNING]**
+ **Always test the complete system under supervision before allowing it to operate unattended.**
 
 Although the system includes several software and hardware safety features, every installation is different. Hose position, pump flow, reservoir height, pot size and soil absorption can all affect how the system behaves.
 
@@ -389,15 +430,22 @@ Check for:
 
 The first tests should be performed with the reservoir partially filled. Do not begin testing with a completely full container unless the system is placed somewhere that can safely handle accidental water release.
 
-> **[!CAUTION]**
-> **Do not place the reservoir or hoses above electronics, power strips, furniture or flooring that could be damaged by water.**
+**[!CAUTION]**
+**Do not place the reservoir or hoses above electronics, power strips, furniture or flooring that could be damaged by water.**
 
 ## 10. Front Status LED
 
+The LED was placed in front of the bucket to be best visible but can also be placed on the side or back.
 
-![Automatic Plant Watering System](IMG_1337.jpg)
+![Automatic Plant Watering System](IMG_1445.jpg)
 
-![Completed Plant Watering System](IMG_1338.jpg)
+*LED fixed to bucket using a zip-tie base*
+
+**Both designs use the same 3MM LED with a 220-330 Ohm Resistor soldered on the anode (+) or the longer leg**
+
+![Completed Plant Watering System](IMG_1350.jpg)
+
+*LED fixed to old bucket design using a zip-tie base*
 
 
 A front-mounted status LED provides basic information without requiring the Blynk application to be opened.
