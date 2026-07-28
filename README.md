@@ -1,5 +1,11 @@
 # Automatic Plant Watering System
 
+This project is an automatic watering system designed to care for up to four plants independently.
+
+Each plant has its own capacitive soil-moisture sensor and dedicated water pump. Instead of watering every plant on a fixed schedule, the system checks the condition of each pot and waters only the plant whose soil has become too dry.
+
+The system is controlled by an ESP32 microcontroller and uses a four-channel relay module to operate the pumps. Two water-level protection systems monitor the reservoir and prevent the pumps from running when there is not enough water available.
+
 ![Internal Electronics](IMG_1337.jpg)
 
 *First Water Bucket that was later replaced with a shorter one*
@@ -7,13 +13,6 @@
 ![Internal Electronics](IMG_1446.jpg)
 
 *Final Water Bucket that has a shorter and more compact design*
-
-This project is an automatic watering system designed to care for up to four plants independently.
-
-Each plant has its own capacitive soil-moisture sensor and dedicated water pump. Instead of watering every plant on a fixed schedule, the system checks the condition of each pot and waters only the plant whose soil has become too dry.
-
-The system is controlled by an ESP32 microcontroller and uses a four-channel relay module to operate the pumps. Two water-level protection systems monitor the reservoir and prevent the pumps from running when there is not enough water available.
-
 
 The main goal was to create a practical system that reduces manual plant care while avoiding both underwatering and unnecessary repeated watering.
 
@@ -50,11 +49,12 @@ This allows plants with different water requirements to be monitored independent
 
 ## 2. Initial Planning
 
-![Original Paper Wiring Sketch](IMG_1347.jpg)
-
 The project began with a paper sketch showing the complete electrical layout before any permanent wiring was made.
 
 The design used one main 5V power source divided into two functional branches.
+
+![Original Paper Wiring Sketch](IMG_1347.jpg)
+
 
 ### Logic Branch
 
@@ -99,6 +99,12 @@ Both branches still share the same 5V supply and common ground. They are functio
 
 ## 3. Component Selection
 
+The first stage involved choosing the sensors, pumps, relay module and operating voltage.
+
+Capacitive soil-moisture sensors were selected instead of exposed-metal resistive probes. Capacitive sensors are generally more suitable for long-term installation because the sensing surface does not rely on two exposed metal electrodes that gradually corrode in wet soil.
+
+A four-channel relay module was selected because it allows the ESP32 to switch each pump independently while keeping pump current away from the ESP32 GPIO pins.
+
 ![Pumps, Sensors and Hoses](IMG_1351.jpg)
 
 *Four capacitive soil sensors, four 5V water pumps and watering hoses.*
@@ -132,16 +138,34 @@ Both branches still share the same 5V supply and common ground. They are functio
 
 **The original taller water reservoir considered during the first build.**
 
-The first stage involved choosing the sensors, pumps, relay module and operating voltage.
 
-Capacitive soil-moisture sensors were selected instead of exposed-metal resistive probes. Capacitive sensors are generally more suitable for long-term installation because the sensing surface does not rely on two exposed metal electrodes that gradually corrode in wet soil.
 
-A four-channel relay module was selected because it allows the ESP32 to switch each pump independently while keeping pump current away from the ESP32 GPIO pins.
 
 ![Original Reservoir Mounted Components](IMG_1335.jpg)
 *All component are wired and glued to the bucket to be tested with a 5v wall charger rated 3 Amps* 
 
 Both 12V and 5V pumps were considered. The final system uses 5V pumps, allowing the ESP32, relay module and pumps to operate from one suitably rated 5V wall power supply.
+
+
+A power supply rated for approximately 3A was selected to provide enough current for the controller and pumps. Because the final components all operate from compatible voltages, additional buck converters were not required.
+
+Only one pump is operated at a time. This reduces the peak load on the power supply and prevents several pumps from starting simultaneously.
+
+## 4. Controller and Wireless Connection
+
+The ESP32 provides:
+
+* Built-in Wi-Fi
+* Enough GPIO pins for four sensors and four relays
+* Multiple ADC1 analog inputs
+* Blynk compatibility
+* Timers and automatic watering logic
+* Remote monitoring and manual control
+
+![ESP32-U Controller](IMG_1352.jpg)
+*The ESP32-U was fitted inside this plastic container in the case of water getting near it with only the bottom being exposed for code reflashing* 
+
+An ESP32-U development board was selected as the main controller.
 
 ![Original Reservoir Mounted Components Back](IMG_1340.jpg)
 *The 4-channel relay on the back of the bucket*
@@ -157,25 +181,6 @@ Both 12V and 5V pumps were considered. The final system uses 5V pumps, allowing 
 *Added zip-tie holes so i can close the lid of the ESP32*
 **NOTE: final design uses 2x water level sensors so one shots off the pumps from starting dry and the other to show the water level in the app**
 
-A power supply rated for approximately 3A was selected to provide enough current for the controller and pumps. Because the final components all operate from compatible voltages, additional buck converters were not required.
-
-Only one pump is operated at a time. This reduces the peak load on the power supply and prevents several pumps from starting simultaneously.
-
-## 4. Controller and Wireless Connection
-
-![ESP32-U Controller](IMG_1352.jpg)
-*The ESP32-U was fitted inside this plastic container in the case of water getting near it with only the bottom being exposed for code reflashing* 
-
-An ESP32-U development board was selected as the main controller.
-
-The ESP32 provides:
-
-* Built-in Wi-Fi
-* Enough GPIO pins for four sensors and four relays
-* Multiple ADC1 analog inputs
-* Blynk compatibility
-* Timers and automatic watering logic
-* Remote monitoring and manual control
 
 The ESP32-U version was chosen because it supports an external antenna through a U.FL connector.
 
@@ -187,15 +192,16 @@ Some ESP32 boards that include both a PCB antenna and a U.FL connector require a
 
 ## 5. Soil Sensor Protection
 
+Only the lower sensing section of a capacitive soil sensor is intended to remain inside the soil.
+
+The upper electronic section contains exposed components and solder joints that can be damaged by water, condensation or wet soil. This section was protected using liquid electrical tape or silicone sealant.
+
 ![Protected Soil Sensor Electronics](IMG_1112.jpg)
 *This was the choosen soil sensor but this design has a major flaw, its electronics are exposed to water damage*
 
 ![Protected Soil Sensor Electronics](IMG_1443.jpg)
 *The sensors have been coated with liquid tape to protect from damage* 
 
-Only the lower sensing section of a capacitive soil sensor is intended to remain inside the soil.
-
-The upper electronic section contains exposed components and solder joints that can be damaged by water, condensation or wet soil. This section was protected using liquid electrical tape or silicone sealant.
 
 The protective coating was applied around:
 
@@ -208,23 +214,44 @@ The active sensing area was left uncovered so the sensor could continue measurin
 
 Care was also taken not to bury the electronic section below the soil line.
 
+## 6. 3D-Printed Flow Breakers and Vent Lines
 
+To fully stop unwanted siphoning, custom 3D-printed flow breakers were added near the ends of the watering hoses.
 
-## 6. Water Reservoir and Siphon Problem
+![3D Printed Flow Breaker](IMG_1431.jpg)
+*I have made this design so it will fit the chosen hoses and to break the syphon effect since it lets water get inside with the top vent*
 
-**NOTE: Please do read the whole project since in early testing the system worked but i had an unforseen problem that the pump stopped but the water kept syphoning and it filled the pot till it got out**
+![3D Printed Flow Breaker Plant](IMG_1444.jpg)
+*Installed on the plant pot holder and with the syphon breaker added*
+
+Each outlet includes a curved vent section that allows air to enter the hose after the pump stops. Introducing air breaks the continuous water column inside the hose and interrupts the siphon effect.
+
+Without the vent, a hose filled completely with water can continue drawing water from the reservoir even though the pump is no longer powered.
+
+The final arrangement provides two forms of siphon protection:
+
+* A shorter reservoir with less height above the plants
+* Vented 3D-printed hose outlets that break the water column
+
+This ensures that each plant receives approximately the intended pump dose rather than continuing to receive water through gravity flow.
+
+## 7. Water Reservoir and Siphon Problem
+
+**NOTE: Please do read the whole project since in early testing the system worked but i had an unforeseen problem that the pump stopped but the water kept syphoning and it filled the pot till it got out**
 
 ![Front Status LED](IMG_1432.jpg)
 
 *3D printed syphon breakers were added so air can enter and break the syphon effect*
 
-![Front Status LED](IMG_1444.jpg)
+*After more testing i have found that the vent was not tall enough*
 
-*After more testing i have found that the vent was not tall enought*
+*NOTE: The vent was tilted forward towards the flower pot so any leaking water will spill back into the pot not out*
+
+**NOTE #2: If you do not have a 3D printer or find an adequate syphon breaker you can just poke a hole with a thicker needle in the top part of the hose to get the exact same effect, just check if the water will flow back inside the pot or out**
 
 ![Completed Front Panel](IMG_1447.jpg)
 
-*Added a piece of hose to make the vent taller so this way it could not spash water out and work flawlessly*
+*Added a piece of hose to make the vent taller so this way it could not splash water out and work flawlessly*
 
 The first reservoir was relatively tall. During testing, its water level could remain higher than the ends of the watering hoses.
 
@@ -242,30 +269,10 @@ The taller bucket was therefore replaced with a shorter container. Lowering the 
 
 ![Completed Front Panel](IMG_1445.jpg)
 
-*This is the final design that i have choose for this project and succesfully tested*
+*This is the final design that i have choose for this project and successfully tested*
 
 Changing the bucket alone improved the system, but it did not fully guarantee that every hose would stop flowing immediately.
 
-## 7. 3D-Printed Flow Breakers and Vent Lines
-
-To fully stop unwanted siphoning, custom 3D-printed flow breakers were added near the ends of the watering hoses.
-
-![3D Printed Flow Breaker](IMG_1431.jpg)
-*I have made this design so it will fit the choosen hoses and to break the syphon effect since it lets water get inside with the top vent*
-
-![3D Printed Flow Breaker Plant](IMG_1444.jpg)
-*Installed on the plant pot holder and with the syphon breaker added*
-
-Each outlet includes a curved vent section that allows air to enter the hose after the pump stops. Introducing air breaks the continuous water column inside the hose and interrupts the siphon effect.
-
-Without the vent, a hose filled completely with water can continue drawing water from the reservoir even though the pump is no longer powered.
-
-The final arrangement provides two forms of siphon protection:
-
-* A shorter reservoir with less height above the plants
-* Vented 3D-printed hose outlets that break the water column
-
-This ensures that each plant receives approximately the intended pump dose rather than continuing to receive water through gravity flow.
 
 ## 8. Safety and Warning Systems
 
@@ -291,9 +298,11 @@ Manual watering can still be started outside this time window, but the empty-tan
 
 Each plant has an independent minimum interval between automatic watering attempts.
 
-The default interval is: 3 hours
+The default interval is *3 hours*
 
-You can see the countdown in the mobile/web app
+You can see the countdown in the mobile / web app
+
+*NOTE: The below UI was made using Blynk's design tools from the platform / app , check 11. Blynk Web and Mobile Dashboard for more*
 
 ![Protected Soil Sensor Electronics](IMG_1450.jpg)
 
