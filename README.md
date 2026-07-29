@@ -123,12 +123,17 @@ A four-channel relay module was selected because it allows the ESP32 to switch e
 
 *ESP32 38-pin model U with external U.fl antenna*
 
+![Reservoir Hose Arrangement](IMG_1284.jpg)
+*Schematic of how the floating sensor works*
+**NOTE: The sensor can be installed both ways with ballast hanging down or raising with water level**
+
 ![Reservoir Testing](IMG_1314.jpg)
 *The water level sensor that will sit inside the water bucket, its a simple switch that can be used both with the ballast lowering down or rising as water level raises*
 
 ![Reservoir Hose Arrangement](IMG_1315.jpg)
 
 *Here i am testing if the sensor works and to check how to install it*
+
 
 ![Modified Reservoir](IMG_1316.jpg)
 
@@ -138,8 +143,8 @@ A four-channel relay module was selected because it allows the ESP32 to switch e
 
 **The original taller water reservoir considered during the first build.**
 
-
-
+![Measuring Sensors Reach](IMG_1331.JPG)
+*Measuring how far should the sensors reach all four flower pots*
 
 ![Original Reservoir Mounted Components](IMG_1335.jpg)
 *All component are wired and glued to the bucket to be tested with a 5v wall charger rated 3 Amps* 
@@ -163,12 +168,13 @@ The ESP32 provides:
 * Remote monitoring and manual control
 
 ![ESP32-U Controller](IMG_1352.jpg)
-*The ESP32-U was fitted inside this plastic container in the case of water getting near it with only the bottom being exposed for code reflashing* 
+*The ESP32-U was fitted inside this plastic container in the case of water getting near it with only the bottom being exposed for code re-flashing* 
 
 An ESP32-U development board was selected as the main controller.
 
 ![Original Reservoir Mounted Components Back](IMG_1340.jpg)
 *The 4-channel relay on the back of the bucket*
+
 **NOTE: it is marked as 250/125/30/28 Volt AC but it works perfectly with a 5v 3A wall charger**
 
 ![Original Reservoir Mounted Components Back1](IMG_1341.jpg)
@@ -177,8 +183,11 @@ An ESP32-U development board was selected as the main controller.
 ![Original Reservoir Mounted Components Back2](IMG_1342.jpg)
 *Checking if pump is arming when ESP32 is triggered*
 
+**NOTE: Here you can also see that the system uses dual water level sensors, one is for actual level and the second one is for the main fail-safe for the pumps to shut off when there is no water**
+
 ![Original Reservoir Mounted Components Back3](IMG_1343.jpg)
 *Added zip-tie holes so i can close the lid of the ESP32*
+
 **NOTE: final design uses 2x water level sensors so one shots off the pumps from starting dry and the other to show the water level in the app**
 
 
@@ -196,8 +205,26 @@ Only the lower sensing section of a capacitive soil sensor is intended to remain
 
 The upper electronic section contains exposed components and solder joints that can be damaged by water, condensation or wet soil. This section was protected using liquid electrical tape or silicone sealant.
 
+At first i was considering to use a water sensor that measures the water level but after some research and testing it proved ineffective for this project
+
+![Water Sensor mk1](IMG_1108.JPG)
+First water sensor i considered to use but its main weakness is that the traces corrode quite fast so it got scrapped
+
+After swapping, i tested the Capacitive Soil Sensor v2.0 since i have read that the older v1.3 had some issues with the reliability of the sensor.
+
+![Testing Soil Sensor Voltage](IMG_1110.JPG)
+*Here the Soil Sensor is tested in water if the voltage changes with the moisture level*
+
+![Testing Soil Sensor Voltage Wet](IMG_1111.JPG)
+*The voltage has dropped to 1.4v as expected*
+
+![Testing Soil Sensor Voltage Dry](IMG_1109.JPG)
+*Then when in dry air the voltage raises to 2.7v. This is by design since the capacitance changes*
+
+**NOTE: This type of sensor measures moisture and by design in dry air it will output around 3v and in wet soil it will reach around 1v**
+
 ![Protected Soil Sensor Electronics](IMG_1112.jpg)
-*This was the choosen soil sensor but this design has a major flaw, its electronics are exposed to water damage*
+*This was the chosen soil sensor but this design has a major flaw, its electronics are exposed to water damage*
 
 ![Protected Soil Sensor Electronics](IMG_1443.jpg)
 *The sensors have been coated with liquid tape to protect from damage* 
