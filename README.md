@@ -124,7 +124,9 @@ A four-channel relay module was selected because it allows the ESP32 to switch e
 *ESP32 38-pin model U with external U.fl antenna*
 
 ![Reservoir Hose Arrangement](IMG_1284.jpg)
+
 *Schematic of how the floating sensor works*
+
 **NOTE: The sensor can be installed both ways with ballast hanging down or raising with water level**
 
 ![Reservoir Testing](IMG_1314.jpg)
@@ -139,12 +141,22 @@ A four-channel relay module was selected because it allows the ESP32 to switch e
 
 *I have installed the sensor at the lowest point of the first water bucket model leaving some space from the bottom so it will not get stuck*
 
+![Reservoir Inside POV](IMG_1317.JPG)
+
+*The interior of the bucket with one sensor installed as close to the bottom as possible*
+
+
 ![Original Reservoir](IMG_1350.jpg)
 
 **The original taller water reservoir considered during the first build.**
 
 ![Measuring Sensors Reach](IMG_1331.JPG)
 *Measuring how far should the sensors reach all four flower pots*
+
+
+![Reservoir With Sensor And Pumps Installed](IMG_1327.JPG)
+*Float sensor and water pumps all installed at the bottom of the bucket, ready to be tested*
+
 
 ![Original Reservoir Mounted Components](IMG_1335.jpg)
 *All component are wired and glued to the bucket to be tested with a 5v wall charger rated 3 Amps* 
